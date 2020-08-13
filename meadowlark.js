@@ -1,7 +1,23 @@
 var express = require('express');
 
 var app = express();
+
+//핸들바 뷰 엔진 설정
+var handlebars = require('express-handlebars').create({defaultLayout:'main'});
+app.engine('handlebars',handlebars.engine);
+app.set('view engine','handlebars');
+
 app.set('port',process.env.PORT || 3000);
+
+app.get('/',function(req,res){
+    res.type('text/plain');
+    res.send('Meadowlark Travel');
+});
+
+app.get('/about',function(req,res){
+    res.type('text/plain');
+    res.send('About Meadowlark Travel');
+});
 
 //커스텀 404 페이지
 app.use(function(req,res){
