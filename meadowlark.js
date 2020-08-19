@@ -13,12 +13,30 @@ app.set('port',process.env.PORT || 3000);
 //Static 미들웨어-정적 자원을 전송하는 역할
 app.use(express.static(__dirname + '/public'));
 
+//테스트를 위한 미들웨어.
+app.use(function(req,res,next){
+    res.locals.showTests = app.get('env') !== 'production' && req.query.test === '1';
+    next();
+})
+
+//라우터
 app.get('/',function(req,res){
     res.render('home');
 });
 
 app.get('/about',function(req,res){
-    res.render('about',{fortune: fortune.getFortune()});
+    res.render('about',{
+        fortune: fortune.getFortune(),
+        pageTestScript: '/qa/tests-about.js'
+    });
+});
+
+app.get('/tours/hood-river',function(req,res){
+    res.render('tours/hood-river');
+});
+
+app.get('/tours/request-group-rate',function(req,res){
+    res.render('/tours/request-group-rate');
 });
 
 //커스텀 404 페이지
